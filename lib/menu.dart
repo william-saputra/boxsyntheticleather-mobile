@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:boxsyntheticleather/widgets/left_drawer.dart';
+import 'package:boxsyntheticleather/productentry_form.dart';
+
 
 class MyHomePage extends StatelessWidget {
   final String npm = '2306165862'; // NPM
@@ -7,8 +10,8 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
   final List<ItemHomepage> items = [
-    ItemHomepage("Lihat Item", Icons.mood),
-    ItemHomepage("Tambah Item", Icons.add),
+    ItemHomepage("Lihat Item", Icons.shopping_cart),
+    ItemHomepage("Tambah Product", Icons.add),
     ItemHomepage("Logout", Icons.logout),
   ];
 
@@ -24,7 +27,10 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      drawer: const LeftDrawer(),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -117,7 +123,7 @@ class ItemCard extends StatelessWidget {
     switch (item.name) {
       case "Lihat Item":
         return Colors.yellow;
-      case "Tambah Item":
+      case "Tambah Product":
         return Colors.blue;
       case "Logout":
         return Colors.red;
@@ -138,6 +144,10 @@ class ItemCard extends StatelessWidget {
             ..showSnackBar(
               SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
             );
+            if (item.name == "Tambah Product") {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ProductEntryFormPage()));
+            }
         },
         child: Container(
           padding: const EdgeInsets.all(8),
