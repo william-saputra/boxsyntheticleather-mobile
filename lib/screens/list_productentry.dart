@@ -3,6 +3,7 @@ import 'package:boxsyntheticleather/models/product_entry.dart';
 import 'package:boxsyntheticleather/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'product_detail.dart';
 
 class ProductEntryPage extends StatefulWidget {
   const ProductEntryPage({super.key});
@@ -13,12 +14,9 @@ class ProductEntryPage extends StatefulWidget {
 
 class _ProductEntryPageState extends State<ProductEntryPage> {
   Future<List<ProductEntry>> fetchProduct(CookieRequest request) async {
-    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     final response = await request.get('http://localhost:8000/json/');
-    
-    // Melakukan decode response menjadi bentuk json
     var data = response;
-    
+
     List<ProductEntry> listProduct = [];
     for (var d in data) {
       if (d != null) {
@@ -55,35 +53,49 @@ class _ProductEntryPageState extends State<ProductEntryPage> {
             } else {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
-                itemBuilder: (_, index) => Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${snapshot.data![index].fields.productName}",
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                itemBuilder: (_, index) {
+                  final product = snapshot.data![index].fields;
+                  return GestureDetector(
+                    onTap: () {
+                      // Arahkan ke halaman detail saat item ditekan
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProductDetailPage(product: product),
                         ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${product.productName}",
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text("Price: \$${product.price}"),
+                          const SizedBox(height: 10),
+                          Text("Description: ${product.description}"),
+                          const SizedBox(height: 10),
+                          Text("Thickness: ${product.thickness}"),
+                          const SizedBox(height: 10),
+                          Text("Reviews: ${product.userReviews}"),
+                          const SizedBox(height: 10),
+                          Text("Ratings: ${product.userRatings}"),
+                        ],
                       ),
-                      const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.price}"),// sampe sini
-                      const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.description}"),
-                      const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.thickness}"),
-                      const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.userReviews}"),
-                      const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.userRatings}"),
-                      
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               );
             }
           }
