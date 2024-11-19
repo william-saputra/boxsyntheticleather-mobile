@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:boxsyntheticleather/menu.dart';
+import 'package:boxsyntheticleather/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());

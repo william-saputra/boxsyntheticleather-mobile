@@ -1,5 +1,8 @@
+import 'package:boxsyntheticleather/screens/login.dart';
 import 'package:flutter/material.dart';
-import 'package:boxsyntheticleather/menu.dart';
+import 'package:boxsyntheticleather/screens/menu.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,17 +13,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xFF2D46A2), // Set primary color to #2d46a2
-        ).copyWith(
-          secondary: Color(0xFF2D46A2), // Set secondary color to #2d46a2
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+        title: 'Mental Health Tracker',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.deepPurple,
+          ).copyWith(secondary: Colors.deepPurple[400]),
         ),
-        useMaterial3: true,
+        home: const LoginPage(),
       ),
-      home: MyHomePage(),
     );
   }
 }
