@@ -50,6 +50,13 @@ class ItemCard extends StatelessWidget {
                   ),
               );
           } 
+          else if (item.name == "Lihat Item") {
+              Navigator.push(context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductEntryPage()
+                  ),
+              );
+          } 
           else if (item.name == "Logout") {
             final response = await request.logout(
                 // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
